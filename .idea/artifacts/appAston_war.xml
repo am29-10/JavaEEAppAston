@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="appAston:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>appAston</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="JavaEEAppAston-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="appAston:war exploded" />
+    </root>
+  </artifact>
+</component>
