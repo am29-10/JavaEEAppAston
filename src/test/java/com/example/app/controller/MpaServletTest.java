@@ -2,7 +2,6 @@ package com.example.app.controller;
 
 import com.example.app.model.Mpa;
 import com.example.app.storage.MpaDao;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
@@ -25,9 +24,9 @@ class MpaServletTest {
     private StringWriter writer;
 
     @BeforeEach
-    public void beforeEach() throws ServletException, IOException {
+    public void beforeEach() throws IOException {
         mpaDao = mock(MpaDao.class);
-        mpaServlet = new MpaServlet();
+        mpaServlet = new MpaServlet(mpaDao);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -36,7 +35,7 @@ class MpaServletTest {
     }
 
     @Test
-    void getAllMpa() throws IOException, InterruptedException, ServletException {
+    void getAllMpa() {
         List<Mpa> mpaList = new ArrayList<>();
         mpaList.add(new Mpa("G", "У фильма нет возрастных ограничений"));
         mpaList.add(new Mpa("PG", "Детям рекомендуется смотреть фильм с родителями"));
@@ -82,6 +81,7 @@ class MpaServletTest {
 
     @Test
     void getMpa() {
+        when(mpaDao.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
         when(request.getServletPath()).thenReturn("/mpa/get");
 
         when(request.getParameter("id")).thenReturn("1");

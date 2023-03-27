@@ -27,7 +27,7 @@ class GenreServletTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         genreDao = mock(GenreDao.class);
-        genreServlet = new GenreServlet();
+        genreServlet = new GenreServlet(genreDao);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -80,6 +80,8 @@ class GenreServletTest {
 
     @Test
     void getGenre() {
+        when(genreDao.getGenreById(1)).thenReturn(new Genre(1,"Фантастика"));
+
         when(request.getServletPath()).thenReturn("/genre/get");
 
         when(request.getParameter("id")).thenReturn("1");

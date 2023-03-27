@@ -4,7 +4,6 @@ import com.example.app.model.Film;
 import com.example.app.model.Mpa;
 import com.example.app.storage.FilmDao;
 import com.example.app.storage.MpaDao;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
@@ -28,10 +27,10 @@ class FilmServletTest {
     private StringWriter writer;
 
     @BeforeEach
-    public void beforeEach() throws ServletException, IOException {
+    public void beforeEach() throws IOException {
         filmDao = mock(FilmDao.class);
         mpaDao = mock(MpaDao.class);
-        filmServlet = new FilmServlet();
+        filmServlet = new FilmServlet(filmDao, mpaDao);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -88,6 +87,11 @@ class FilmServletTest {
 
     @Test
     void getFilm() {
+        when(mpaDao.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
+
+        when(filmDao.getFilmById(1)).thenReturn(new Film(1,"Гарри Потер", "История мальчика, который " +
+                "выжил и его друзей", 3, new Mpa(1,"G", "У фильма нет возрастных ограничений")));
+
         when(request.getServletPath()).thenReturn("/film/get");
 
         when(request.getParameter("id")).thenReturn("1");

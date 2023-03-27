@@ -12,12 +12,18 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/mpa/add", "/mpa/update", "/mpa/get-all", "/mpa/get"})
 public class MpaServlet extends HttpServlet {
-    private MpaDao mpaDao = new MpaDaoImpl("postgres");
-    private String titleDB = "postgres";
+    private MpaDao mpaDao;
+    public MpaServlet() {
+        this(new MpaDaoImpl("postgres"));
+    }
+
+    public MpaServlet(MpaDao mpaDao) {
+        this.mpaDao = mpaDao;
+    }
 
     @Override
     public void init() {
-        mpaDao = new MpaDaoImpl(titleDB);
+        mpaDao = new MpaDaoImpl("postgres");
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {

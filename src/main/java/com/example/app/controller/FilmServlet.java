@@ -16,9 +16,19 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/film/add", "/film/update", "/film/get-all", "/film/get"})
 public class  FilmServlet extends HttpServlet {
-    private FilmDao filmDao = new FilmDaoImpl("postgres");
-    private MpaDao mpaDao = new MpaDaoImpl("postgres");
+    private FilmDao filmDao;
+    private MpaDao mpaDao;
     List<Film> filmList = new ArrayList<>();
+
+    public FilmServlet() {
+        this(new FilmDaoImpl("postgres"),
+                new MpaDaoImpl("postgres"));
+    }
+
+    public FilmServlet(FilmDao filmDao, MpaDao mpaDao) {
+        this.filmDao = filmDao;
+        this.mpaDao = mpaDao;
+    }
 
     @Override
     public void init() {

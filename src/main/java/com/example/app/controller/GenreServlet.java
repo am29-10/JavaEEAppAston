@@ -14,8 +14,16 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/genre/add", "/genre/update", "/genre/get-all", "/genre/get"})
 public class GenreServlet extends HttpServlet {
 
-    private GenreDao genreDao = new GenreDaoImpl("postgres");;
+    private GenreDao genreDao;
     List<Genre> genreList = new ArrayList<>();
+
+    public GenreServlet() {
+        this(new GenreDaoImpl("postgres"));
+    }
+
+    public GenreServlet(GenreDao genreDao) {
+        this.genreDao = genreDao;
+    }
 
     @Override
     public void init() {
