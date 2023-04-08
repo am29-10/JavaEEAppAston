@@ -1,7 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Mpa;
-import com.example.app.storage.MpaDao;
+import com.example.app.service.MpaService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 class MpaServletTest {
-    private MpaDao mpaDao;
+    private MpaService mpaService;
     private MpaServlet mpaServlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -25,8 +25,8 @@ class MpaServletTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        mpaDao = mock(MpaDao.class);
-        mpaServlet = new MpaServlet(mpaDao);
+        mpaService = mock(MpaService.class);
+        mpaServlet = new MpaServlet(mpaService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -43,7 +43,7 @@ class MpaServletTest {
         mpaList.add(new Mpa("R", "Лицам до 17 лет просматривать фильм можно только в присутствии взрослого"));
         mpaList.add(new Mpa("NC-17777", "Лицам до 18 лет просмотр запрещён"));
 
-        when(mpaDao.readAll()).thenReturn(mpaList);
+        when(mpaService.readAll()).thenReturn(mpaList);
 
         when(request.getServletPath()).thenReturn("/mpa/get-all");
 
@@ -81,7 +81,7 @@ class MpaServletTest {
 
     @Test
     void getMpa() {
-        when(mpaDao.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
+        when(mpaService.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
         when(request.getServletPath()).thenReturn("/mpa/get");
 
         when(request.getParameter("id")).thenReturn("1");

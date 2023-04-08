@@ -2,8 +2,8 @@ package com.example.app.controller;
 
 import com.example.app.model.Film;
 import com.example.app.model.Mpa;
-import com.example.app.storage.FilmDao;
-import com.example.app.storage.MpaDao;
+import com.example.app.service.FilmService;
+import com.example.app.service.MpaService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
@@ -19,8 +19,8 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 class FilmServletTest {
-    private FilmDao filmDao;
-    private MpaDao mpaDao;
+    private FilmService filmService;
+    private MpaService mpaService;
     private FilmServlet filmServlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -28,9 +28,9 @@ class FilmServletTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        filmDao = mock(FilmDao.class);
-        mpaDao = mock(MpaDao.class);
-        filmServlet = new FilmServlet(filmDao, mpaDao);
+        filmService = mock(FilmService.class);
+        mpaService = mock(MpaService.class);
+        filmServlet = new FilmServlet(filmService, mpaService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -42,16 +42,16 @@ class FilmServletTest {
     void getAllFilm() {
         List<Film> filmList = new ArrayList<>();
 
-        when(mpaDao.getMpaById(1)).thenReturn(new Mpa("G", "У фильма нет возрастных ограничений"));
+        when(mpaService.getMpaById(1)).thenReturn(new Mpa("G", "У фильма нет возрастных ограничений"));
         filmList.add(new Film("Гарри Потер", "История мальчика, который выжил и его друзей", 3,
-                mpaDao.getMpaById(1)));
+                mpaService.getMpaById(1)));
 
-        when(filmDao.readAll()).thenReturn(filmList);
+        when(filmService.readAll()).thenReturn(filmList);
 
         when(request.getServletPath()).thenReturn("/film/get-all");
 
         filmServlet.doGet(request, response);
-        System.out.println(filmDao.readAll());
+        System.out.println(filmService.readAll());
 
         verify(request, times(1)).getServletPath();
     }
@@ -87,9 +87,9 @@ class FilmServletTest {
 
     @Test
     void getFilm() {
-        when(mpaDao.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
+        when(mpaService.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
 
-        when(filmDao.getFilmById(1)).thenReturn(new Film(1,"Гарри Потер", "История мальчика, который " +
+        when(filmService.getFilmById(1)).thenReturn(new Film(1,"Гарри Потер", "История мальчика, который " +
                 "выжил и его друзей", 3, new Mpa(1,"G", "У фильма нет возрастных ограничений")));
 
         when(request.getServletPath()).thenReturn("/film/get");

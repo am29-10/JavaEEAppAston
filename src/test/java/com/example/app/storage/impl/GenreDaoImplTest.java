@@ -1,13 +1,10 @@
 package com.example.app.storage.impl;
 
+import com.example.app.db.Connector;
 import com.example.app.model.Genre;
 import com.example.app.storage.GenreDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,17 +18,9 @@ class GenreDaoImplTest {
         genre = new Genre("Художественный");
         genreDao = new GenreDaoImpl("h2");
 
-        String JDBC_URL = "jdbc:h2:./db/films;INIT=runscript from 'src/main/resources/schema.sql'";
-        String USERNAME = "sa";
-        String PASSWORD = "password";
-        String CLASS_NAME = "org.h2.Driver";
-        try {
-            Connection connection = null;
-            Class.forName(CLASS_NAME);
-            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        Connector connector = new Connector("h2");
+        connector.setJDBC_URL("jdbc:h2:./db/films;INIT=runscript from 'src/main/resources/schema.sql'");
+        connector.getConnection();
     }
 
     @Test

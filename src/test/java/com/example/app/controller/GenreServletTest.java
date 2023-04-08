@@ -1,7 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Genre;
-import com.example.app.storage.GenreDao;
+import com.example.app.service.GenreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 class GenreServletTest {
-    private GenreDao genreDao;
+    private GenreService genreService;
     private GenreServlet genreServlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -26,8 +26,8 @@ class GenreServletTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        genreDao = mock(GenreDao.class);
-        genreServlet = new GenreServlet(genreDao);
+        genreService = mock(GenreService.class);
+        genreServlet = new GenreServlet(genreService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         writer = new StringWriter();
@@ -45,7 +45,7 @@ class GenreServletTest {
         genreList.add(new Genre( "Документальный"));
         genreList.add(new Genre( "Боевик-1"));
 
-        when(genreDao.readAll()).thenReturn(genreList);
+        when(genreService.readAll()).thenReturn(genreList);
 
         when(request.getServletPath()).thenReturn("/genre/get-all");
 
@@ -80,7 +80,7 @@ class GenreServletTest {
 
     @Test
     void getGenre() {
-        when(genreDao.getGenreById(1)).thenReturn(new Genre(1,"Фантастика"));
+        when(genreService.getGenreById(1)).thenReturn(new Genre(1,"Фантастика"));
 
         when(request.getServletPath()).thenReturn("/genre/get");
 
