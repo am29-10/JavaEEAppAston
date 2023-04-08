@@ -1,33 +1,26 @@
 package com.example.app.controller;
 
 import com.example.app.model.Genre;
-import com.example.app.storage.GenreDao;
-import com.example.app.storage.impl.GenreDaoImpl;
+import com.example.app.service.GenreService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/genre/add", "/genre/update", "/genre/get-all", "/genre/get"})
 public class GenreServlet extends HttpServlet {
 
-    private GenreDao genreDao;
-    List<Genre> genreList = new ArrayList<>();
+    private GenreService genreService;
 
-    public GenreServlet() {
-        this(new GenreDaoImpl("postgres"));
-    }
-
-    public GenreServlet(GenreDao genreDao) {
-        this.genreDao = genreDao;
+    public GenreServlet(GenreService genreService) {
+        this.genreService = genreService;
     }
 
     @Override
     public void init() {
-        genreDao = new GenreDaoImpl("postgres");
+        genreService = new GenreService();
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -57,7 +50,7 @@ public class GenreServlet extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            genreList = genreDao.readAll();
+            List<Genre> genreList = genreService.readAll();
             PrintWriter pw = response.getWriter();
             for (Genre genre : genreList) {
                 pw.println(genre.getName());
@@ -75,7 +68,7 @@ public class GenreServlet extends HttpServlet {
             PrintWriter pw = response.getWriter();
             String name = request.getParameter("name");
             Genre newGenre = new Genre(name);
-            genreDao.create(newGenre);
+            genreService.create(newGenre);
             pw.println("Жанр с названием " + newGenre.getName() + " добавлен в БД");
             pw.close();
         } catch (IOException e) {
@@ -91,7 +84,7 @@ public class GenreServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             Genre updatedGenre = new Genre(id, name);
-            genreDao.update(id, updatedGenre);
+            genreService.update(id, updatedGenre);
             pw.println("Жанр для id = " + id + " обновлен");
             pw.close();
         } catch (IOException e) {
@@ -104,7 +97,7 @@ public class GenreServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             int id = Integer.parseInt(request.getParameter("id"));
-            Genre genre = genreDao.getGenreById(id);
+            Genre genre = genreService.getGenreById(id);
             PrintWriter pw = response.getWriter();
             pw.println(genre.getName());
             pw.close();

@@ -2,38 +2,29 @@ package com.example.app.controller;
 
 import com.example.app.model.Film;
 import com.example.app.model.Mpa;
-import com.example.app.storage.FilmDao;
-import com.example.app.storage.MpaDao;
-import com.example.app.storage.impl.FilmDaoImpl;
-import com.example.app.storage.impl.MpaDaoImpl;
+import com.example.app.service.FilmService;
+import com.example.app.service.MpaService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/film/add", "/film/update", "/film/get-all", "/film/get"})
 public class  FilmServlet extends HttpServlet {
-    private FilmDao filmDao;
-    private MpaDao mpaDao;
-    List<Film> filmList = new ArrayList<>();
+    private FilmService filmService;
+    private MpaService mpaService;
 
-    public FilmServlet() {
-        this(new FilmDaoImpl("postgres"),
-                new MpaDaoImpl("postgres"));
-    }
-
-    public FilmServlet(FilmDao filmDao, MpaDao mpaDao) {
-        this.filmDao = filmDao;
-        this.mpaDao = mpaDao;
+    public FilmServlet(FilmService filmService, MpaService mpaService) {
+        this.filmService = filmService;
+        this.mpaService = mpaService;
     }
 
     @Override
     public void init() {
-        filmDao = new FilmDaoImpl("postgres");
-        mpaDao = new MpaDaoImpl("postgres");
+        filmService = new FilmService();
+        mpaService = new MpaService();
     }
 
     @Override
@@ -65,7 +56,7 @@ public class  FilmServlet extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            filmList = filmDao.readAll();
+            List<Film> filmList = filmService.readAll();
             request.setAttribute("filmList", filmList);
             PrintWriter pw = response.getWriter();
             for (Film film : filmList) {
@@ -86,9 +77,9 @@ public class  FilmServlet extends HttpServlet {
             String description = request.getParameter("description");
             int duration = Integer.parseInt(request.getParameter("duration"));
             int mpaId = Integer.parseInt(request.getParameter("mpa_id"));
-            Mpa mpa = mpaDao.getMpaById(mpaId);
+            Mpa mpa = mpaService.getMpaById(mpaId);
             Film newFilm = new Film(name, description, duration, mpa);
-            filmDao.create(newFilm);
+            filmService.create(newFilm);
             pw.println("Фильм с названием " + newFilm.getName() + " добавлен в БД");
             pw.close();
         } catch (IOException e) {
@@ -106,9 +97,9 @@ public class  FilmServlet extends HttpServlet {
             String description = request.getParameter("description");
             int duration = Integer.parseInt(request.getParameter("duration"));
             int mpaId = Integer.parseInt(request.getParameter("mpa_id"));
-            Mpa mpa = mpaDao.getMpaById(mpaId);
+            Mpa mpa = mpaService.getMpaById(mpaId);
             Film updatedFilm = new Film(id, name, description, duration, mpa);
-            filmDao.update(id, updatedFilm);
+            filmService.update(id, updatedFilm);
             pw.println("Фильм для id = " + id + " обновлен");
             pw.close();
         } catch (IOException e) {
@@ -121,7 +112,7 @@ public class  FilmServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             int id = Integer.parseInt(request.getParameter("id"));
-            Film film = filmDao.getFilmById(id);
+            Film film = filmService.getFilmById(id);
             PrintWriter pw = response.getWriter();
             pw.println(film.getName());
             pw.close();

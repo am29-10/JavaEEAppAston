@@ -1,8 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Mpa;
-import com.example.app.storage.MpaDao;
-import com.example.app.storage.impl.MpaDaoImpl;
+import com.example.app.service.MpaService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -12,18 +11,15 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/mpa/add", "/mpa/update", "/mpa/get-all", "/mpa/get"})
 public class MpaServlet extends HttpServlet {
-    private MpaDao mpaDao;
-    public MpaServlet() {
-        this(new MpaDaoImpl("postgres"));
-    }
+    private MpaService mpaService;
 
-    public MpaServlet(MpaDao mpaDao) {
-        this.mpaDao = mpaDao;
+    public MpaServlet(MpaService mpaService) {
+        this.mpaService = mpaService;
     }
 
     @Override
     public void init() {
-        mpaDao = new MpaDaoImpl("postgres");
+        mpaService = new MpaService();
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -53,7 +49,7 @@ public class MpaServlet extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            List<Mpa> mpaList = mpaDao.readAll();
+            List<Mpa> mpaList = mpaService.readAll();
             PrintWriter pw = response.getWriter();
             for (Mpa mpa : mpaList) {
                 pw.println(mpa.getName());
@@ -72,7 +68,7 @@ public class MpaServlet extends HttpServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             Mpa newMpa = new Mpa(name, description);
-            mpaDao.create(newMpa);
+            mpaService.create(newMpa);
             pw.println("MPA с названием " + newMpa.getName() + " добавлен в БД");
             pw.close();
         } catch (IOException e) {
@@ -89,7 +85,7 @@ public class MpaServlet extends HttpServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             Mpa updatedMpa = new Mpa(id, name, description);
-            mpaDao.update(id, updatedMpa);
+            mpaService.update(id, updatedMpa);
             pw.println("MPA для id = " + id + " обновлено");
             pw.close();
         } catch (IOException e) {
@@ -102,7 +98,7 @@ public class MpaServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             int id = Integer.parseInt(request.getParameter("id"));
-            Mpa mpa = mpaDao.getMpaById(id);
+            Mpa mpa = mpaService.getMpaById(id);
             PrintWriter pw = response.getWriter();
             pw.println(mpa.getName());
             pw.close();
