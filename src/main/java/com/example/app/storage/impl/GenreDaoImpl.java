@@ -1,5 +1,6 @@
 package com.example.app.storage.impl;
 
+import com.example.app.db.Connector;
 import com.example.app.model.Genre;
 import com.example.app.storage.GenreDao;
 
@@ -9,39 +10,19 @@ import java.util.List;
 
 public class GenreDaoImpl implements GenreDao {
 
-    private String JDBC_URL;
-    private String USERNAME;
-    private String PASSWORD;
-    private String CLASS_NAME;
+    Connector connector;
 
-    public GenreDaoImpl(String nameDB) {
-        if (nameDB.equals("postgres")) {
-            JDBC_URL = "jdbc:postgresql://localhost:5432/filmsDB";
-            USERNAME = "admin";
-            PASSWORD = "admin";
-            CLASS_NAME = "org.postgresql.Driver";
-        } else if (nameDB.equals("h2")) {
-            JDBC_URL = "jdbc:h2:./db/films;DB_CLOSE_DELAY=-1";
-            USERNAME = "sa";
-            PASSWORD = "password";
-            CLASS_NAME = "org.h2.Driver";
-        }
+    public GenreDaoImpl() {
+        connector = new Connector();
     }
 
-    protected Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName(CLASS_NAME);
-            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return connection;
+    public GenreDaoImpl(String nameDB) {
+        connector = new Connector(nameDB);
     }
 
     @Override
     public Genre create(Genre genre) {
-        try (Connection connection = getConnection();
+        try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("INSERT INTO genres (name) VALUES (?)")) {
             ps.setString(1, genre.getName());
             ps.executeUpdate();
@@ -54,7 +35,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public List<Genre> readAll() {
         List<Genre> genreList = new ArrayList<>();
-        try (Connection connection = getConnection();
+        try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM GENRES")) {
             ResultSet rs = ps.executeQuery();
 
@@ -71,7 +52,7 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public Genre update(int id, Genre genre) {
-        try (Connection connection = getConnection();
+        try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("UPDATE GENRES SET name=? WHERE id=?")) {
             ps.setString(1, genre.getName());
             ps.setInt(2, id);
@@ -85,7 +66,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public Genre getGenreById(int id) {
         Genre genre = null;
-        try (Connection connection = getConnection();
+        try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM GENRES WHERE id = ?")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
