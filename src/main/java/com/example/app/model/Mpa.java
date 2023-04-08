@@ -1,5 +1,7 @@
 package com.example.app.model;
 
+/* Mpa (Motion Picture Association) - является родоначальницей рейтинговой системы, помогающей родителям оценить,
+ подходят ли те или иные фильмы для просмотра их детьми */
 public class Mpa {
     private int id;
     private String name;
