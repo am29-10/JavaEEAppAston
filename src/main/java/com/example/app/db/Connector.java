@@ -1,28 +1,44 @@
 package com.example.app.db;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Connector {
+    private static final String DB = "db.properties";
     private String JDBC_URL;
     private String USERNAME;
     private String PASSWORD;
     private String CLASS_NAME;
 
     public Connector() {
-        JDBC_URL = "jdbc:postgresql://localhost:5432/filmsDB";
-        USERNAME = "admin";
-        PASSWORD = "admin";
-        CLASS_NAME = "org.postgresql.Driver";
+        Properties properties = new Properties();
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DB)) {
+            properties.load(inputStream);
+            JDBC_URL = properties.getProperty("postgres.url");
+            USERNAME = properties.getProperty("postgres.username");
+            PASSWORD = properties.getProperty("postgres.password");
+            CLASS_NAME = properties.getProperty("postgres.driver-class-name");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Connector(String nameDB) {
         if (nameDB.equals("h2")) {
-            JDBC_URL = "jdbc:h2:./db/films;DB_CLOSE_DELAY=-1";
-            USERNAME = "sa";
-            PASSWORD = "password";
-            CLASS_NAME = "org.h2.Driver";
+            Properties properties = new Properties();
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DB)) {
+                properties.load(inputStream);
+                JDBC_URL = properties.getProperty("h2.url");
+                USERNAME = properties.getProperty("h2.username");
+                PASSWORD = properties.getProperty("h2.password");
+                CLASS_NAME = properties.getProperty("h2.driver-class-name");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
