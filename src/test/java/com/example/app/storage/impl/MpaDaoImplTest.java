@@ -1,7 +1,7 @@
 package com.example.app.storage.impl;
 
 import com.example.app.db.Connector;
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.storage.MpaDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MpaDaoImplTest {
-    Mpa mpa;
+    MotionPictureAssociation mpa;
     MpaDao mpaDao;
 
     @BeforeEach
     void beforeEach() {
-        mpa = new Mpa("X", "На сеанс не допускаются лица, не достигшие 17-летнего возраста");
+        mpa = new MotionPictureAssociation("X", "На сеанс не допускаются лица, не достигшие 17-летнего возраста");
         mpaDao = new MpaDaoImpl("h2");
 
         Connector connector = new Connector("h2");

@@ -7,10 +7,10 @@ public class Film {
     private String name;
     private String description;
     private int duration;
-    private Mpa mpa;
+    private MotionPictureAssociation mpa;
     private List<Genre> genres;
 
-    public Film(int id, String name, String description, int duration, Mpa mpa) {
+    public Film(int id, String name, String description, int duration, MotionPictureAssociation mpa) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -18,7 +18,7 @@ public class Film {
         this.mpa = mpa;
     }
 
-    public Film(String name, String description, int duration, Mpa mpa) {
+    public Film(String name, String description, int duration, MotionPictureAssociation mpa) {
         this.name = name;
         this.description = description;
         this.duration = duration;
@@ -49,11 +49,11 @@ public class Film {
         return duration;
     }
 
-    public Mpa getMpa() {
+    public MotionPictureAssociation getMpa() {
         return mpa;
     }
 
-    public void setMpa(Mpa mpa) {
+    public void setMpa(MotionPictureAssociation mpa) {
         this.mpa = mpa;
     }
 

@@ -1,19 +1,17 @@
 package com.example.app.model;
 
-/* Mpa (Motion Picture Association) - является родоначальницей рейтинговой системы, помогающей родителям оценить,
- подходят ли те или иные фильмы для просмотра их детьми */
-public class Mpa {
+public class MotionPictureAssociation {
     private int id;
     private String name;
     private String description;
 
-    public Mpa(int id, String name, String description) {
+    public MotionPictureAssociation(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public Mpa(String name, String description) {
+    public MotionPictureAssociation(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -40,7 +38,7 @@ public class Mpa {
 
     @Override
     public String toString() {
-        return "Mpa{" +
+        return "MotionPictureAssociation{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

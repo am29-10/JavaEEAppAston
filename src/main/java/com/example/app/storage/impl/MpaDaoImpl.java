@@ -1,7 +1,7 @@
 package com.example.app.storage.impl;
 
 import com.example.app.db.Connector;
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.storage.MpaDao;
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public Mpa create(Mpa mpa) {
+    public MotionPictureAssociation create(MotionPictureAssociation mpa) {
         try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("INSERT INTO MPA (name, description) " +
                      "VALUES (?, ?)")) {
@@ -33,8 +33,8 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public List<Mpa> readAll() {
-        List<Mpa> mpaList = new ArrayList<>();
+    public List<MotionPictureAssociation> readAll() {
+        List<MotionPictureAssociation> mpaList = new ArrayList<>();
         try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM MPA")) {
             ResultSet rs = ps.executeQuery();
@@ -43,7 +43,7 @@ public class MpaDaoImpl implements MpaDao {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
-                mpaList.add(new Mpa(id, name, description));
+                mpaList.add(new MotionPictureAssociation(id, name, description));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -52,7 +52,7 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public Mpa update(int id, Mpa mpa) {
+    public MotionPictureAssociation update(int id, MotionPictureAssociation mpa) {
         try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("UPDATE MPA SET name=?, description=? WHERE id=?")) {
             ps.setString(1, mpa.getName());
@@ -66,8 +66,8 @@ public class MpaDaoImpl implements MpaDao {
     }
 
     @Override
-    public Mpa getMpaById(int id) {
-        Mpa mpa = null;
+    public MotionPictureAssociation getMpaById(int id) {
+        MotionPictureAssociation mpa = null;
         try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM MPA WHERE id = ?")) {
             ps.setInt(1, id);
@@ -75,7 +75,7 @@ public class MpaDaoImpl implements MpaDao {
             while (rs.next()) {
                 String name = rs.getString("name");
                 String description = rs.getString("description");
-                mpa = new Mpa(id, name, description);
+                mpa = new MotionPictureAssociation(id, name, description);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

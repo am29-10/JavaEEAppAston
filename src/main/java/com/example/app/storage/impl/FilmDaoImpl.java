@@ -2,7 +2,7 @@ package com.example.app.storage.impl;
 
 import com.example.app.db.Connector;
 import com.example.app.model.Film;
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.storage.FilmDao;
 import com.example.app.storage.MpaDao;
 
@@ -53,7 +53,7 @@ public class FilmDaoImpl implements FilmDao {
                 String description = rs.getString("description");
                 int duration = rs.getInt("duration");
                 int mpaId = rs.getInt("mpa_id");
-                Mpa mpa = mpaDao.getMpaById(mpaId);
+                MotionPictureAssociation mpa = mpaDao.getMpaById(mpaId);
                 filmList.add(new Film(id, name, description, duration, mpa));
             }
         } catch (SQLException e) {
@@ -94,7 +94,7 @@ public class FilmDaoImpl implements FilmDao {
                 String description = rs.getString("description");
                 int duration = rs.getInt("duration");
                 int mpaId = rs.getInt("mpa_id");
-                Mpa mpa = mpaDao.getMpaById(mpaId);
+                MotionPictureAssociation mpa = mpaDao.getMpaById(mpaId);
                 film = new Film(id, name, description, duration, mpa);
             }
         } catch (SQLException e) {

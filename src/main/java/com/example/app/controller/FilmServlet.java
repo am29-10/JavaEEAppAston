@@ -1,7 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Film;
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.service.FilmService;
 import com.example.app.service.MpaService;
 import jakarta.servlet.http.*;
@@ -77,7 +77,7 @@ public class  FilmServlet extends HttpServlet {
             String description = request.getParameter("description");
             int duration = Integer.parseInt(request.getParameter("duration"));
             int mpaId = Integer.parseInt(request.getParameter("mpa_id"));
-            Mpa mpa = mpaService.getMpaById(mpaId);
+            MotionPictureAssociation mpa = mpaService.getMpaById(mpaId);
             Film newFilm = new Film(name, description, duration, mpa);
             filmService.create(newFilm);
             pw.println("Фильм с названием " + newFilm.getName() + " добавлен в БД");
@@ -97,7 +97,7 @@ public class  FilmServlet extends HttpServlet {
             String description = request.getParameter("description");
             int duration = Integer.parseInt(request.getParameter("duration"));
             int mpaId = Integer.parseInt(request.getParameter("mpa_id"));
-            Mpa mpa = mpaService.getMpaById(mpaId);
+            MotionPictureAssociation mpa = mpaService.getMpaById(mpaId);
             Film updatedFilm = new Film(id, name, description, duration, mpa);
             filmService.update(id, updatedFilm);
             pw.println("Фильм для id = " + id + " обновлен");

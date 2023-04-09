@@ -11,11 +11,11 @@ class FilmTest {
 
     Film film;
 
-    Mpa mpa;
+    MotionPictureAssociation mpa;
 
     @BeforeEach
     void beforeEach() {
-        mpa = new Mpa(1, "G", "У фильма нет возрастных ограничений");
+        mpa = new MotionPictureAssociation(1, "G", "У фильма нет возрастных ограничений");
         film = new Film(1,"Гарри Потер", "История мальчика, который выжил и его друзей", 3,
                 mpa);
     }
@@ -59,7 +59,7 @@ class FilmTest {
 
     @Test
     void setMpa() {
-        Mpa newMpa = new Mpa(2, "PG", "Детям рекомендуется смотреть фильм с родителями");
+        MotionPictureAssociation newMpa = new MotionPictureAssociation(2, "PG", "Детям рекомендуется смотреть фильм с родителями");
         film.setMpa(newMpa);
         assertEquals(newMpa, film.getMpa());
     }

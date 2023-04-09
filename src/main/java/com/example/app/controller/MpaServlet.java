@@ -1,6 +1,6 @@
 package com.example.app.controller;
 
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.service.MpaService;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -49,9 +49,9 @@ public class MpaServlet extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            List<Mpa> mpaList = mpaService.readAll();
+            List<MotionPictureAssociation> mpaList = mpaService.readAll();
             PrintWriter pw = response.getWriter();
-            for (Mpa mpa : mpaList) {
+            for (MotionPictureAssociation mpa : mpaList) {
                 pw.println(mpa.getName());
             }
             pw.close();
@@ -67,7 +67,7 @@ public class MpaServlet extends HttpServlet {
             PrintWriter pw = response.getWriter();
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            Mpa newMpa = new Mpa(name, description);
+            MotionPictureAssociation newMpa = new MotionPictureAssociation(name, description);
             mpaService.create(newMpa);
             pw.println("MPA с названием " + newMpa.getName() + " добавлен в БД");
             pw.close();
@@ -84,7 +84,7 @@ public class MpaServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            Mpa updatedMpa = new Mpa(id, name, description);
+            MotionPictureAssociation updatedMpa = new MotionPictureAssociation(id, name, description);
             mpaService.update(id, updatedMpa);
             pw.println("MPA для id = " + id + " обновлено");
             pw.close();
@@ -98,7 +98,7 @@ public class MpaServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             int id = Integer.parseInt(request.getParameter("id"));
-            Mpa mpa = mpaService.getMpaById(id);
+            MotionPictureAssociation mpa = mpaService.getMpaById(id);
             PrintWriter pw = response.getWriter();
             pw.println(mpa.getName());
             pw.close();

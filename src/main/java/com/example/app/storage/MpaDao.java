@@ -1,16 +1,16 @@
 package com.example.app.storage;
 
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 
 import java.util.List;
 
 public interface MpaDao {
-    Mpa create(Mpa mpa);
+    MotionPictureAssociation create(MotionPictureAssociation mpa);
 
-    List<Mpa> readAll();
+    List<MotionPictureAssociation> readAll();
 
-    Mpa update(int id, Mpa mpa);
+    MotionPictureAssociation update(int id, MotionPictureAssociation mpa);
 
-    Mpa getMpaById(int id);
+    MotionPictureAssociation getMpaById(int id);
 
 }

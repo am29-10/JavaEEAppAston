@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MpaTest {
-    Mpa mpa;
+    MotionPictureAssociation mpa;
 
     @BeforeEach
     void beforeEach() {
-        mpa = new Mpa(1, "X", "На сеанс не допускаются лица, не достигшие 17-летнего возраста");
+        mpa = new MotionPictureAssociation(1, "X", "На сеанс не допускаются лица, не достигшие 17-летнего возраста");
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.app.service;
 
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.storage.MpaDao;
 import com.example.app.storage.impl.MpaDaoImpl;
 
@@ -14,19 +14,19 @@ public class MpaService {
         mpaDao = new MpaDaoImpl();
     }
 
-    public Mpa create(Mpa mpa) {
+    public MotionPictureAssociation create(MotionPictureAssociation mpa) {
         return mpaDao.create(mpa);
     }
 
-    public List<Mpa> readAll() {
+    public List<MotionPictureAssociation> readAll() {
         return mpaDao.readAll();
     }
 
-    public Mpa update(int id, Mpa mpa) {
+    public MotionPictureAssociation update(int id, MotionPictureAssociation mpa) {
         return mpaDao.update(id, mpa);
     }
 
-    public Mpa getMpaById(int id) {
+    public MotionPictureAssociation getMpaById(int id) {
         return mpaDao.getMpaById(id);
     }
 }

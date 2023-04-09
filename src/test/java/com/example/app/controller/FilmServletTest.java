@@ -1,7 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Film;
-import com.example.app.model.Mpa;
+import com.example.app.model.MotionPictureAssociation;
 import com.example.app.service.FilmService;
 import com.example.app.service.MpaService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ class FilmServletTest {
     void getAllFilm() {
         List<Film> filmList = new ArrayList<>();
 
-        when(mpaService.getMpaById(1)).thenReturn(new Mpa("G", "У фильма нет возрастных ограничений"));
+        when(mpaService.getMpaById(1)).thenReturn(new MotionPictureAssociation("G", "У фильма нет возрастных ограничений"));
         filmList.add(new Film("Гарри Потер", "История мальчика, который выжил и его друзей", 3,
                 mpaService.getMpaById(1)));
 
@@ -87,10 +87,10 @@ class FilmServletTest {
 
     @Test
     void getFilm() {
-        when(mpaService.getMpaById(1)).thenReturn(new Mpa(1,"G", "У фильма нет возрастных ограничений"));
+        when(mpaService.getMpaById(1)).thenReturn(new MotionPictureAssociation(1,"G", "У фильма нет возрастных ограничений"));
 
         when(filmService.getFilmById(1)).thenReturn(new Film(1,"Гарри Потер", "История мальчика, который " +
-                "выжил и его друзей", 3, new Mpa(1,"G", "У фильма нет возрастных ограничений")));
+                "выжил и его друзей", 3, new MotionPictureAssociation(1,"G", "У фильма нет возрастных ограничений")));
 
         when(request.getServletPath()).thenReturn("/film/get");
 
